@@ -1,3 +1,5 @@
+from tkinter import NO
+
 from src.tasks.dtos import TaskSchema
 from sqlalchemy.orm import Session
 from src.tasks.models import TaskModel
@@ -9,15 +11,39 @@ def create_task(body: TaskSchema, db: Session):
   db.add(new_task)
   db.commit()
   db.refresh(new_task)
-  return { "status": "Task created successfully...", "data": new_task}
+  return new_task
 
 
 def get_task(db:Session):
   tasks = db.query(TaskModel).all()
-  return {"status": "All task", "data": tasks}
+  return tasks
 
 def get_one_task(task_id: int, db: Session):
   one_task = db.query(TaskModel).get(task_id)
   if not one_task:
     raise HTTPException(404, detail="Task id not found")
-  return {"status": "Task Fetched Successfully", "data": one_task}
+  return one_task
+
+def update_task(body: TaskSchema, task_id: int, db: Session):
+  one_task = db.query(TaskModel).get(task_id)
+  if not one_task:
+    raise HTTPException(404, detail="Task id not found")
+  body = body.model_dump()
+  for key, value in body.items():
+    setattr(one_task, key, value)
+  # one_task.title = body.title
+  # one_task.description = body.description
+  # one_task.is_completed = body.is_completed
+
+  db.add(one_task)
+  db.commit()
+  db.refresh(one_task)
+  return  one_task
+
+def delete_task(task_id:int, db:Session):
+  one_task = db.query(TaskModel).get(task_id)
+  if not one_task:
+    raise HTTPException(404, detail="Task id not found")
+  db.delete(one_task)
+  db.commit()
+  return None
