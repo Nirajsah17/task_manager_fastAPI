@@ -1,5 +1,4 @@
 from fastapi import HTTPException, status, Request
-from httpx import request
 from src.user.dtos import UserSchema, LoginSchema
 from sqlalchemy.orm import Session
 from src.user.models import UserModel

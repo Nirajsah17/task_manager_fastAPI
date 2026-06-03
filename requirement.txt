@@ -1,6 +1,8 @@
 SQLAlchemy
-pydantic_settings
+pydantic-settings
 psycopg2-binary
 fastapi
-pyjwt"pwdlib[argon2]"
+uvicorn[standard]
+PyJWT
+pwdlib[argon2]
 alembic

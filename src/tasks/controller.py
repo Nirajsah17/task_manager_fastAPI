@@ -1,5 +1,3 @@
-from tkinter import NO
-
 from src.tasks.dtos import TaskSchema
 from sqlalchemy.orm import Session
 from src.tasks.models import TaskModel
